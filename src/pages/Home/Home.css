@@ -1,0 +1,24 @@
+p{
+    /* margin-block-end: 0; */
+}
+
+.avatar{
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.avatar:hover{
+    opacity: 0.6;
+}
+
+
+.username:hover{
+    text-decoration: underline;
+}
+
+/* .actions{
+    width: 20px;
+    height: 20px;
+} */

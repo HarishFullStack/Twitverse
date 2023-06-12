@@ -43,9 +43,6 @@
   padding: 1rem 1rem 1rem 1rem;
 }
 
-.avatar{
-  vertical-align: middle;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.cursor-pointer{
+  cursor: pointer;
 }

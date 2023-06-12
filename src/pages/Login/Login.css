@@ -1,0 +1,48 @@
+.login-card{
+    flex-grow: 1;
+    display: flex;
+    padding: 1.5rem 1.5rem 1rem;
+    background-color: var(--white-color);
+    width: 26rem;
+  }
+  
+  .login-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 5rem;
+    padding: 0.75rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .input-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    justify-content: left;
+    border-radius: 0.25rem;
+  }
+
+  .text-input{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    justify-content: center;
+    border-radius: 0.25rem;
+    height: 2.5rem;
+    border: 1px solid grey;
+  }
+
+  label{
+    text-align: left;
+  }
+
+  .btn-login-guest{
+    margin-top: 20px;
+  }
+
+  .sign-in-header{
+    text-align: center;
+  }

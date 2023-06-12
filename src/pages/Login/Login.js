@@ -1,6 +1,6 @@
-import { NavLink, json, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { useContext, useState } from "react";
+import { useState } from "react";
 // import { AuthContext } from "../../context/AuthContext";
 // import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';

@@ -7,6 +7,7 @@ export function Home(){
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
     const [bookmarks, setBookmarks] = useState(user.bookmarks);
+    const [file, setFile] = useState();
 
     const getPosts = async () => {
         try{
@@ -60,9 +61,35 @@ export function Home(){
         }
     }
 
+    const handleFileUpload = (e) => {
+        setFile(URL.createObjectURL(e.target.files[0]));
+    }
+
+    const handleRemoveFile = (e) => {
+        setFile();
+    }
+
     return(
-        <>
+        <div className="main-content">
             <h4 className="text-start">Home</h4>
+            <div className="d-flex mb-5">
+                <div className="d-flex"><img className="avatar cursor-pointer" alt={user.username} src={user.profilePic}></img></div>
+                <div className="w-100">
+                    <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} />
+                    <hr></hr>
+                    {file && <div className="position-relative"><img className="w-100" src={file}></img> <button className="button-remove" onClick={handleRemoveFile}><i class="fa fa-times" aria-hidden="true"></i></button></div>}
+                    <div className="w-100">
+                        <label>
+                            <input type="file" accept="image/*" class="hidden" onChange={handleFileUpload}/>
+                                <img src="./assets/images/image-upload.png"></img>
+                            </label>
+                        <button className="btn btn-primary btn-post d-flex float-end">Post</button>
+                    </div>
+                    <hr></hr>
+
+                </div>
+                
+            </div>
             {
                 posts.map((post) => {
                     return(
@@ -90,6 +117,6 @@ export function Home(){
                     )
                 })
             }
-        </>
+        </div>
     )
 }

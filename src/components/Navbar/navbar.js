@@ -1,9 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./navbar.css";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export function Navbar(){
 
     const navigate = useNavigate();
+    const {setIsLoggedIn, setUser} = useContext(AuthContext);
 
     const getActiveStyle = ({isActive}) => ({
         fontWeight: isActive ? "600" : "400" 
@@ -12,6 +15,8 @@ export function Navbar(){
     const handleLogOut = () => {
         localStorage.removeItem("encodedToken");
         localStorage.removeItem("user");
+        setIsLoggedIn(false);
+        setUser({});
         navigate("/");
     }
 
@@ -34,7 +39,7 @@ export function Navbar(){
             </li>
             <li className="nav-item">
                 <div className="navlink">
-                    <a href="#" className="nav-link" onClick={handleLogOut}><i class="fa fa-outdent" aria-hidden="true"></i> Logout</a>
+                    <a href="#" className="nav-link" onClick={handleLogOut}><i className="fa fa-outdent" aria-hidden="true"></i> Logout</a>
                 </div>
             </li>
         </ul>

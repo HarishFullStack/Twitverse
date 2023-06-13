@@ -12,6 +12,7 @@ export const users = [
     lastName: "Balika",
     username: "adarshbalika",
     password: "adarshBalika123",
+    profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp",
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },

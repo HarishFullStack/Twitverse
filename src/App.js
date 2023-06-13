@@ -6,15 +6,23 @@ import { Bookmarks } from './pages/Bookmarks/Bookmarks';
 import { SignUp } from './pages/SignUp/SignUp';
 import { Login } from './pages/Login/Login';
 import { Navbar } from './components/Navbar/navbar';
+import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  return (
-    <div className="App row">
-      <div className='col-md-2'>
-        <Navbar/>
-      </div>
 
-      <div className='col-md-6 main-content'>
+  const {isLoggedIn} = useContext(AuthContext);
+
+  return (
+    <div className="App row justify-content-center">
+      <ToastContainer />
+      {isLoggedIn && <div className='col-md-2'>
+      <Navbar/>
+      </div>}
+      {isLoggedIn && <div className='v-left'></div>}
+      <div className='col-md-6'>
         <Routes>
           <Route path='/' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>
@@ -23,8 +31,9 @@ function App() {
           <Route path='/bookmarks' element={<Bookmarks/>}></Route>
         </Routes>
       </div>
-      <div className='col-md-4'>
-      </div>
+      {isLoggedIn && <div className='v-right'></div>}
+      {isLoggedIn && <div className='col-md-2'>
+      </div>}
     </div>
   );
 }

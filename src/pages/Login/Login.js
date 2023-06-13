@@ -1,14 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { useState } from "react";
-// import { AuthContext } from "../../context/AuthContext";
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function Login(){
 
     const navigate = useNavigate();
-    // const {setIsLoggedIn, setUser} = useContext(AuthContext);
+    const {setIsLoggedIn, setUser} = useContext(AuthContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -21,14 +21,16 @@ export function Login(){
                 body: JSON.stringify(creds)
             });
             const res = await response.json();
+            console.log(res);
             if(res.errors){
-                // toast.error(res.errors[0], {position: toast.POSITION.BOTTOM_RIGHT});
+                console.log(res.errors);
+                toast.error(res.errors[0], {position: toast.POSITION.BOTTOM_RIGHT});
             }else{
                 localStorage.setItem("encodedToken", res.encodedToken);
                 localStorage.setItem("user", JSON.stringify(res.foundUser));
 
-                // setIsLoggedIn(true);
-                // setUser(res.foundUser);
+                setIsLoggedIn(true);
+                setUser(res.foundUser);
                 navigate("/home");
             }
         }

@@ -38,11 +38,21 @@
 }
 
 .main-content{
-  border-left: 1px solid lightgrey;
-  border-right: 1px solid lightgrey;
+  align-content: center;
   padding: 1rem 1rem 1rem 1rem;
 }
 
 .cursor-pointer{
   cursor: pointer;
 }
+
+.v-left{
+  width: 1px;
+  border-right: 1px solid lightgrey;
+}
+
+.v-right{
+  width: 1px;
+  border-left: 1px solid lightgrey;
+}
+

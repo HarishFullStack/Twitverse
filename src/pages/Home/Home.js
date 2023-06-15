@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "./Home.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "../../context/AuthContext";
 
 export function Home(){
 
     const [posts, setPosts] = useState([]);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+    const [post, setPost] = useState([]);
+    const {user} = useContext(AuthContext);
     const [bookmarks, setBookmarks] = useState(user.bookmarks);
     const [file, setFile] = useState();
 
@@ -13,7 +17,7 @@ export function Home(){
         try{
             const response = await fetch("/api/posts");
             const res = await response.json();
-            setPosts(res.posts);
+            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
             //setIsLoading(false);
         } catch(error) {
             console.log(error);
@@ -33,7 +37,7 @@ export function Home(){
                 headers: {"authorization": localStorage.getItem("encodedToken")}
             });
             const res = await response.json();
-            setPosts(res.posts);
+            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
         } catch(error) {
             console.log(error);
         }
@@ -69,21 +73,53 @@ export function Home(){
         setFile();
     }
 
+    const handleCreatePost = async () => {
+        try{
+            const postData = {
+                content: post, 
+                profilePic: user.profilePic
+            }
+
+            const response = await fetch(`/api/posts`, {
+                method: "POST",
+                headers: {"authorization": localStorage.getItem("encodedToken")},
+                body: JSON.stringify({postData})
+            });
+            const res = await response.json();
+            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const handleDeletePost = async (postId) => {
+        try{
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: "DELETE",
+                headers: {"authorization": localStorage.getItem("encodedToken")}
+            });
+            const res = await response.json();
+            setPosts(posts.filter((x) => x._id !== postId).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     return(
         <div className="main-content">
             <h4 className="text-start">Home</h4>
             <div className="d-flex mb-5">
                 <div className="d-flex"><img className="avatar cursor-pointer" alt={user.username} src={user.profilePic}></img></div>
                 <div className="w-100">
-                    <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} />
+                    <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} onChange={(event) => setPost(event.target.value)}/>
                     <hr></hr>
-                    {file && <div className="position-relative"><img className="w-100" src={file}></img> <button className="button-remove" onClick={handleRemoveFile}><i class="fa fa-times" aria-hidden="true"></i></button></div>}
+                    {file && <div className="position-relative"><img className="w-100" src={file}></img> <button className="button-remove" onClick={handleRemoveFile}><i className="fa fa-times" aria-hidden="true"></i></button></div>}
                     <div className="w-100">
                         <label>
-                            <input type="file" accept="image/*" class="hidden" onChange={handleFileUpload}/>
+                            <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload}/>
                                 <img src="./assets/images/image-upload.png"></img>
                             </label>
-                        <button className="btn btn-primary btn-post d-flex float-end">Post</button>
+                        <button className="btn btn-primary btn-post d-flex float-end" onClick={handleCreatePost}>Post</button>
                     </div>
                     <hr></hr>
 
@@ -95,7 +131,7 @@ export function Home(){
                     return(
                         <div className="d-flex mb-5" key={post._id}>
                             <div className="d-flex"><img className="avatar cursor-pointer" alt={post.username} src={post.profilePic}></img></div>
-                            <div>
+                            <div className="w-100">
                                 <b className="username cursor-pointer">{post.username}</b> | {dayjs(post.createdAt).format("MMM")} {dayjs(post.createdAt).format("D")}
                                 <p>{post.content}</p>
                                 <div className="">
@@ -106,13 +142,13 @@ export function Home(){
                                     </div>
                                 </div>
                             </div>
-                            <div className="nav-item dropdown dropstart">
+                            {post.username === user.username && <div className="nav-item dropdown dropstart float-end">
                                 <i className="fa fa-ellipsis-h float-end cursor-pointer nav-link" data-bs-toggle="dropdown" aria-expanded="false" aria-hidden="true"></i>
                                 <ul className="dropdown-menu">
                                     <li><a className="dropdown-item" href="#">Edit</a></li>
-                                    <li><a className="dropdown-item" href="#">Delete</a></li>
+                                    <li><a className="dropdown-item" href="#" onClick={() => handleDeletePost(post._id)}>Delete</a></li>
                                 </ul>
-                            </div>
+                            </div>}
                         </div>
                     )
                 })

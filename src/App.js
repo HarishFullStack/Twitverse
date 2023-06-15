@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Sidebar } from './components/Sidebar/Sidebar';
 
 function App() {
 
@@ -18,11 +19,11 @@ function App() {
   return (
     <div className="App row justify-content-center">
       <ToastContainer />
-      {isLoggedIn && <div className='col-md-2'>
+      {isLoggedIn && <div className='w-15'>
       <Navbar/>
       </div>}
       {isLoggedIn && <div className='v-left'></div>}
-      <div className='col-md-6'>
+      <div className='w-50'>
         <Routes>
           <Route path='/' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>
@@ -32,7 +33,8 @@ function App() {
         </Routes>
       </div>
       {isLoggedIn && <div className='v-right'></div>}
-      {isLoggedIn && <div className='col-md-2'>
+      {isLoggedIn && <div className='w-auto'>
+        <Sidebar/>
       </div>}
     </div>
   );

@@ -47,12 +47,17 @@
 }
 
 .v-left{
+  padding: 0;
   width: 1px;
   border-right: 1px solid lightgrey;
 }
 
 .v-right{
+  padding: 0;
   width: 1px;
   border-left: 1px solid lightgrey;
 }
 
+.w-15{
+  width: 15%;
+}

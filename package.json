@@ -11,6 +11,7 @@
     "jwt-encode": "^1.0.1",
     "miragejs": "^0.1.47",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-router": "6.11.1",
     "react-router-dom": "6.11.1",

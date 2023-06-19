@@ -1,0 +1,38 @@
+.fit-content{
+    max-width: fit-content;
+}
+
+.back-button:hover{
+    border-radius: 50rem;
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.profile-avatar{
+    vertical-align: middle;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    max-width: fit-content;
+}
+
+.profile-avatar:hover{
+    opacity: 0.6;
+}
+
+.profile-info{
+    align-items: center;
+    vertical-align: middle;
+}
+
+.btn-outline-primary{
+    border-radius: 50rem;
+}
+
+.row{
+    padding-top: 0.5rem;
+}
+
+.modal-dialog {
+    max-width: 20%;
+  }

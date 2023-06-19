@@ -11,6 +11,7 @@ import { AuthContext } from './context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Sidebar } from './components/Sidebar/Sidebar';
+import { UserProfile } from './pages/UserProfile/UserProfile';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Route path='/home' element={<Home/>}></Route>
           <Route path='/explore' element={<Explore/>}></Route>
           <Route path='/bookmarks' element={<Bookmarks/>}></Route>
+          <Route path='/profile/:username' element={<UserProfile/>}></Route>
         </Routes>
       </div>
       {isLoggedIn && <div className='v-right'></div>}

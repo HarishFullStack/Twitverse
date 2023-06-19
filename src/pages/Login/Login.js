@@ -21,9 +21,7 @@ export function Login(){
                 body: JSON.stringify(creds)
             });
             const res = await response.json();
-            console.log(res);
             if(res.errors){
-                console.log(res.errors);
                 toast.error(res.errors[0], {position: toast.POSITION.BOTTOM_RIGHT});
             }else{
                 localStorage.setItem("encodedToken", res.encodedToken);

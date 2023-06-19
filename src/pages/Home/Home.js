@@ -13,7 +13,7 @@ export function Home(){
     const {user, followList, setFollowList} = useContext(AuthContext);
     const {posts, setPosts, bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
 
-    const [post, setPost] = useState([]);
+    const [post, setPost] = useState("");
     const [file, setFile] = useState();
 
     const getPosts = async () => {
@@ -91,7 +91,7 @@ export function Home(){
                             <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload}/>
                                 <img src="./assets/images/image-upload.png"></img>
                             </label>
-                        <button className="btn btn-primary btn-post d-flex float-end" onClick={handleCreatePost}>Post</button>
+                        <button className="btn btn-primary btn-post d-flex float-end" disabled={post === ""} onClick={handleCreatePost}>Post</button>
                     </div>
                     <hr></hr>
 

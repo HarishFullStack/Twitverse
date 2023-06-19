@@ -1,14 +1,16 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PostContext } from "../../context/PostContext";
 
 export function Login(){
 
     const navigate = useNavigate();
     const {setIsLoggedIn, setUser} = useContext(AuthContext);
+    const {setBookmarks} = useContext(PostContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -29,6 +31,8 @@ export function Login(){
 
                 setIsLoggedIn(true);
                 setUser(res.foundUser);
+                setBookmarks(res.foundUser.bookmarks);
+
                 navigate("/home");
             }
         }

@@ -12,6 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { UserProfile } from './pages/UserProfile/UserProfile';
+import { RequiresAuth } from './components/RequiresAuth/RequiresAuth';
 
 function App() {
 
@@ -28,10 +29,10 @@ function App() {
         <Routes>
           <Route path='/' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>
-          <Route path='/home' element={<Home/>}></Route>
-          <Route path='/explore' element={<Explore/>}></Route>
-          <Route path='/bookmarks' element={<Bookmarks/>}></Route>
-          <Route path='/profile/:username' element={<UserProfile/>}></Route>
+          <Route path='/home' element={<RequiresAuth><Home/></RequiresAuth>}></Route>
+          <Route path='/explore' element={<RequiresAuth><Explore/></RequiresAuth>}></Route>
+          <Route path='/bookmarks' element={<RequiresAuth><Bookmarks/></RequiresAuth>}></Route>
+          <Route path='/profile/:username' element={<RequiresAuth><UserProfile/></RequiresAuth>}></Route>
         </Routes>
       </div>
       {isLoggedIn && <div className='v-right'></div>}

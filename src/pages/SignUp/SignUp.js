@@ -7,7 +7,7 @@ export function SignUp() {
 
     const navigate = useNavigate();
 
-    const {setIsLoggedIn, setUser} = useContext(AuthContext);
+    const {setIsLoggedIn, setUser, setBookmarks} = useContext(AuthContext);
 
     const [firstName, setFirstname] = useState("");
     const [lastName, setLastname] = useState("");
@@ -17,7 +17,7 @@ export function SignUp() {
     const [passwordType, setPasswordType] = useState("password");
 
     const handleSignUpClick = async () =>{
-        const creds = {username, password, firstName, lastName};
+        const creds = {username, password, firstName, lastName, profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp"};
 
         const response = await fetch("/api/auth/signup", {
             method: "POST",
@@ -30,6 +30,7 @@ export function SignUp() {
 
         setIsLoggedIn(true);
         setUser(res.createdUser);
+        setBookmarks(res.createdUser.bookmarks);
         navigate("/home");
     }
 

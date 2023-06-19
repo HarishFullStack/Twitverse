@@ -8,7 +8,7 @@ export function Post({data}){
     <div className="d-flex mb-5" key={data.post._id}>
 
     <div className="d-flex">
-        <img className="avatar cursor-pointer" alt={data.username} src={data.post.profilePic}></img></div>
+        <img className="avatar cursor-pointer" alt={data.post.username} src={data.post.profilePic}></img></div>
     <div className="w-100">
         <b className="username cursor-pointer" onClick={() => navigate(`/profile/${data.post.username}`)}>{data.post.username}</b> | {dayjs(data.post.createdAt).format("MMM")} {dayjs(data.post.createdAt).format("D")}
         <p>{data.post.content}</p>

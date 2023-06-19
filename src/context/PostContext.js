@@ -5,10 +5,10 @@ export const PostContext = createContext();
 
 export function PostProvider({children}){
 
-    const {user, followList, setFollowList} = useContext(AuthContext);
+    const {isLoggedIn, user, followList, setFollowList} = useContext(AuthContext);
 
     const [posts, setPosts] = useState([]);
-    const [bookmarks, setBookmarks] = useState(user.bookmarks);
+    const [bookmarks, setBookmarks] = useState([]);
 
 
     const likePost = async (postId) => {

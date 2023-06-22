@@ -2,12 +2,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./SignUp.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { PostContext } from "../../context/PostContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function SignUp() {
 
     const navigate = useNavigate();
 
-    const {setIsLoggedIn, setUser, setBookmarks} = useContext(AuthContext);
+    const {setIsLoggedIn, setUser} = useContext(AuthContext);
+    const {setBookmarks} = useContext(PostContext);
 
     const [firstName, setFirstname] = useState("");
     const [lastName, setLastname] = useState("");
@@ -17,21 +21,31 @@ export function SignUp() {
     const [passwordType, setPasswordType] = useState("password");
 
     const handleSignUpClick = async () =>{
-        const creds = {username, password, firstName, lastName, profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp"};
+            try{
+            const creds = {username, password, firstName, lastName, profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1687450387/Twitverse/profile-pics/default-profile_dlg4eu.png"};
 
-        const response = await fetch("/api/auth/signup", {
-            method: "POST",
-            body: JSON.stringify(creds)
-        });
+            const response = await fetch("/api/auth/signup", {
+                method: "POST",
+                body: JSON.stringify(creds)
+            });
 
-        const res = await response.json();
-        localStorage.setItem("encodedToken", res.encodedToken);
-        localStorage.setItem("user", JSON.stringify(res.createdUser));
-
-        setIsLoggedIn(true);
-        setUser(res.createdUser);
-        setBookmarks(res.createdUser.bookmarks);
-        navigate("/home");
+            const res = await response.json();
+            if(res.errors)
+            {
+                toast.error(res.errors[0], {position: toast.POSITION.BOTTOM_RIGHT});
+            }else{
+                toast.success("Account created", {position: toast.POSITION.BOTTOM_RIGHT});
+                localStorage.setItem("encodedToken", res.encodedToken);
+                localStorage.setItem("user", JSON.stringify(res.createdUser));
+                console.log(res);
+                setIsLoggedIn(true);
+                setUser(res.createdUser);
+                setBookmarks(res.createdUser.bookmarks);
+                navigate("/home");
+            }
+        }catch(error){
+            console.log(error);
+        }
     }
 
     return (

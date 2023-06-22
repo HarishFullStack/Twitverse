@@ -51,7 +51,7 @@ export function Bookmarks(){
             {
                 bookmarks.map((post) => {
                     return(
-                        <Post data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
+                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
                     )
                 })
             }

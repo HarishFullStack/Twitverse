@@ -7,8 +7,11 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { PostContext } from "../../context/PostContext";
 import { Post } from "../../components/Post/Post";
+import { Modal } from "react-bootstrap";
 
 export function Home(){
+
+    const navigate = useNavigate();
 
     const {user, followList, setFollowList} = useContext(AuthContext);
     const {posts, setPosts, bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
@@ -64,6 +67,7 @@ export function Home(){
             });
             const res = await response.json();
             setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setPost("");
         } catch(error) {
             console.log(error);
         }
@@ -81,16 +85,16 @@ export function Home(){
         <div className="main-content">
             <h4 className="text-start">Home</h4>
             <div className="d-flex mb-5">
-                <div className="d-flex"><img className="avatar cursor-pointer" alt={user.username} src={user.profilePic}></img></div>
+                <div className="d-flex"><img className="avatar cursor-pointer" alt={user.username} src={user.profilePic} onClick={() => navigate(`/profile/${user.username}`)}></img></div>
                 <div className="w-100">
-                    <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} onChange={(event) => setPost(event.target.value)}/>
+                    <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} value={post} onChange={(event) => setPost(event.target.value)}/>
                     <hr></hr>
                     {file && <div className="position-relative"><img className="w-100" src={file}></img> <button className="button-remove" onClick={handleRemoveFile}><i className="fa fa-times" aria-hidden="true"></i></button></div>}
                     <div className="w-100">
                         <label>
                             <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload}/>
                                 <img src="./assets/images/image-upload.png"></img>
-                            </label>
+                        </label>
                         <button className="btn btn-primary btn-post d-flex float-end" disabled={post === ""} onClick={handleCreatePost}>Post</button>
                     </div>
                     <hr></hr>
@@ -101,10 +105,10 @@ export function Home(){
             {
                 posts.map((post) => {
                     return(
-                        <Post data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
+                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
                     )
                 })
             }
-        </div>
+    </div>
     )
 }

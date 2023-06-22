@@ -15,6 +15,7 @@ export function UserProfile(){
 
     const [posts, setPosts] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState({});
+    const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 
 
@@ -75,6 +76,14 @@ const reducer = (state, action) => {
         setShowEditProfileModal(true);
     }
 
+    const handleEditAvatar = () => {
+        setShowAvatarModal(true);
+    }
+
+    const handleEditAvatarClose = () => {
+        setShowAvatarModal(false);
+    }
+
     const handleUpdateProfile = async () => {
         try{
             const response = await fetch(`/api/users/edit`, {
@@ -83,9 +92,11 @@ const reducer = (state, action) => {
                 body: JSON.stringify({userData: state})
             });
             const res = await response.json();
+
             localStorage.setItem("user", JSON.stringify(res.user));
             setUser(res.user);
             if(res.user.username === username){
+                console.log(res.user);
                 setSelectedProfile(res.user);
             }
             handleClose();
@@ -108,6 +119,12 @@ const reducer = (state, action) => {
 
     const handleRemoveBookmarkClick = (postId) => {
         removeBookmark(postId);
+    }
+    
+    const handleAvatarUpdate = (event) => {
+        dispatch({type: "PROFILEPIC", value: event.target.src});
+        setSelectedProfile({...selectedProfile, profilePic: event.target.src});
+        handleEditAvatarClose();
     }
 
     return(
@@ -140,18 +157,21 @@ const reducer = (state, action) => {
             {
                 posts.map((post) => {
                     return(
-                        <Post data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />      
+                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />      
                     )
                 })
             }
-            <Modal show={showEditProfileModal} onHide={handleClose} size="lg">
+            <Modal className="edit-profile-modal" show={showEditProfileModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row pb-4">
                         <div className='col-md-12 d-flex justify-content-center'>
-                            <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src={selectedProfile.profilePic}></img>
+                        <label>
+                            <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src={selectedProfile.profilePic} onClick={handleEditAvatar}></img>
+                        </label>
+                            {/* <i class="fa fa-camera" aria-hidden="true"></i> */}
                         </div>
                         <div className='row'>
                             <div className="col-md-6">
@@ -182,6 +202,20 @@ const reducer = (state, action) => {
                     <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
                     <button type="button" className="btn btn-primary" onClick={handleUpdateProfile}>Update</button>
                 </Modal.Footer>
+            </Modal>
+
+            <Modal className="avatar-modal" show={showAvatarModal}  onHide={handleEditAvatarClose} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Avatar</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="d-flex justify-content-center">
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/download_xa5riv.png" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/man-with-beard-avatar-character-isolated-icon-free-vector_bs1bq0.jpg" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/images_3_jyahqx.jpg" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/download_sy9imr.jpg" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/images_1_lfwcu1.png" onClick={(event) => handleAvatarUpdate(event)}></img>
+                </Modal.Body>
             </Modal>
         </div>
 

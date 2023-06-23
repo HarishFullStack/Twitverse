@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { PostContext } from "../../context/PostContext";
 import { AuthContext } from "../../context/AuthContext";
-import { Post } from "../../components/Post/Post";
+import { SinglePost } from "../../components/SinglePost/SinglePost";
 
 export function Bookmarks(){
 
-    const {posts, setPosts, bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
+    const {posts, setPosts, bookmarks, setBookmarks, likePost, disLikePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
     const {user, followList, setFollowList} = useContext(AuthContext);
 
     const getPosts = async () => {
@@ -33,6 +33,10 @@ export function Bookmarks(){
         likePost(postId);
     }
 
+    const handleDisLikeClick = (postId) => {
+        disLikePost(postId);
+    }
+
     const handleBookmarkClick = (postId) => {
         bookmarkPost(postId)
     }
@@ -51,7 +55,7 @@ export function Bookmarks(){
             {
                 bookmarks.map((post) => {
                     return(
-                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
+                        <SinglePost key={post._id} data={{post, bookmarks, user, handleLikeClick, handleDisLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
                     )
                 })
             }

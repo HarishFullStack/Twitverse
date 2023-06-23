@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { PostContext } from "../../context/PostContext";
-import { Post } from "../../components/Post/Post";
+import { Post, SinglePost } from "../../components/SinglePost/SinglePost";
 import { Modal } from "react-bootstrap";
 
 export function Home(){
@@ -14,7 +14,7 @@ export function Home(){
     const navigate = useNavigate();
 
     const {user, followList, setFollowList} = useContext(AuthContext);
-    const {posts, setPosts, bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
+    const {posts, setPosts, bookmarks, setBookmarks, likePost, disLikePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
 
     const [post, setPost] = useState("");
     const [file, setFile] = useState();
@@ -38,6 +38,10 @@ export function Home(){
 
     const handleLikeClick = (postId) => {
         likePost(postId);
+    }
+
+    const handleDisLikeClick = (postId) => {
+        disLikePost(postId);
     }
 
     const handleBookmarkClick = (postId) => {
@@ -92,12 +96,11 @@ export function Home(){
                     {file && <div className="position-relative"><img className="w-100" src={file}></img> <button className="button-remove" onClick={handleRemoveFile}><i className="fa fa-times" aria-hidden="true"></i></button></div>}
                     <div className="w-100">
                         <label>
-                            <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload}/>
-                                <img src="./assets/images/image-upload.png"></img>
+                            {/* <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload}/>
+                                <img src="./assets/images/image-upload.png"></img> */}
                         </label>
                         <button className="btn btn-primary btn-post d-flex float-end" disabled={post === ""} onClick={handleCreatePost}>Post</button>
                     </div>
-                    <hr></hr>
 
                 </div>
                 
@@ -105,7 +108,7 @@ export function Home(){
             {
                 posts.map((post) => {
                     return(
-                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
+                        <SinglePost key={post._id} data={{post, bookmarks, user, handleLikeClick, handleDisLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
                     )
                 })
             }

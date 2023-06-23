@@ -3,7 +3,7 @@ import "./UserProfile.css";
 import { useContext, useEffect, useReducer, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Modal } from 'react-bootstrap';
-import { Post } from "../../components/Post/Post";
+import { Post, SinglePost } from "../../components/SinglePost/SinglePost";
 import { PostContext } from "../../context/PostContext";
 
 export function UserProfile(){
@@ -11,7 +11,7 @@ export function UserProfile(){
     const navigate = useNavigate();
     const {username} = useParams();
     const {user, setUser, allUsers, setAllUsers} = useContext(AuthContext);
-    const {bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
+    const {bookmarks, setBookmarks, likePost, disLikePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
 
     const [posts, setPosts] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState({});
@@ -109,6 +109,10 @@ const reducer = (state, action) => {
         likePost(postId);
     }
 
+    const handleDisLikeClick = (postId) => {
+        disLikePost(postId);
+    }
+
     const handleBookmarkClick = (postId) => {
         bookmarkPost(postId)
     }
@@ -131,7 +135,7 @@ const reducer = (state, action) => {
         <div className="main-content">
             <div className="row">
                 <div className="d-flex align-items-center fit-content back-button" onClick={() => navigate("/home")}><i className="fa fa-arrow-left" aria-hidden="true"></i></div>
-                <div className="fit-content"><h4 className="text-start">Home</h4></div>
+                <div className="fit-content"><h4 className="text-start">{selectedProfile.firstName} {selectedProfile.lastName}</h4></div>
             </div>
             <div className="row col-md-12">
                 <div className="col-md-2 fit-content">
@@ -157,7 +161,7 @@ const reducer = (state, action) => {
             {
                 posts.map((post) => {
                     return(
-                        <Post key={post._id} data={{post, bookmarks, user, handleLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />      
+                        <SinglePost key={post._id} data={{post, bookmarks, user, handleLikeClick, handleDisLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />      
                     )
                 })
             }

@@ -19,6 +19,21 @@ export function PostProvider({children}){
             });
             const res = await response.json();
             setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            return res.posts;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const disLikePost = async (postId) => {
+        try{
+            const response = await fetch(`/api/posts/dislike/${postId}`, {
+                method: "POST",
+                headers: {"authorization": localStorage.getItem("encodedToken")}
+            });
+            const res = await response.json();
+            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            return res.posts;
         } catch(error) {
             console.log(error);
         }
@@ -81,7 +96,7 @@ export function PostProvider({children}){
     }
 
     return(
-        <PostContext.Provider value={{posts, setPosts, bookmarks, setBookmarks, likePost, bookmarkPost, removeBookmark, deletePost}}>
+        <PostContext.Provider value={{posts, setPosts, bookmarks, setBookmarks, likePost, disLikePost, bookmarkPost, removeBookmark, deletePost}}>
             {children}
         </PostContext.Provider>
     )

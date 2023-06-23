@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { UserProfile } from './pages/UserProfile/UserProfile';
 import { RequiresAuth } from './components/RequiresAuth/RequiresAuth';
+import { Post } from './pages/Post/Post';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
           <Route path='/home' element={<RequiresAuth><Home/></RequiresAuth>}></Route>
           <Route path='/explore' element={<RequiresAuth><Explore/></RequiresAuth>}></Route>
           <Route path='/bookmarks' element={<RequiresAuth><Bookmarks/></RequiresAuth>}></Route>
+          <Route path='/post/:postId' element={<RequiresAuth><Post/></RequiresAuth>}></Route>
           <Route path='/profile/:username' element={<RequiresAuth><UserProfile/></RequiresAuth>}></Route>
         </Routes>
       </div>

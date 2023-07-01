@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import dayjs from "dayjs";
 import "./Home.css";
 import { toast } from 'react-toastify';
@@ -19,17 +19,37 @@ export function Home(){
     const [post, setPost] = useState("");
     const [file, setFile] = useState();
 
+
     const getPosts = async () => {
         try{
             const response = await fetch("/api/posts");
             const res = await response.json();
-            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            let following = user.following.map((x) => x.username);
+            following = [...following, user.username];
+            console.log(res)
+            setPosts(res.posts);
             //setIsLoading(false);
         } catch(error) {
             console.log(error);
             //setIsLoading(false);
         }
     }
+
+    const reducer = (state, action) => {
+        switch(action.type){
+            case "trending":
+                return {...state, filter: "Trending Posts", filteredPosts: posts.sort((a, b) => b.likes.likeCount - a.likes.likeCount)}
+            case "latest":
+                return {...state, filter: "Latest Posts", filteredPosts: posts.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)) }
+            case "oldest":
+                return {...state, filter: "Oldest Posts", filteredPosts: posts.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))  }
+        }
+    }
+
+    const [state, dispatch] = useReducer(reducer, {
+        filter: "Trending Posts",
+        filteredPosts: posts.sort((a, b) => b.likes.likeCount - a.likes.likeCount)
+    }); 
 
     useEffect(() => {
         //setIsLoading(true);
@@ -86,9 +106,9 @@ export function Home(){
     }
 
     return(
-        <div className="main-content">
-            <h4 className="text-start">Home</h4>
-            <div className="d-flex mb-5">
+        <div className="">
+            <h4 className="text-start p1-rem">Home</h4>
+            <div className="d-flex mb-5 p1-rem">
                 <div className="d-flex"><img className="avatar cursor-pointer" alt={user.username} src={user.profilePic} onClick={() => navigate(`/profile/${user.username}`)}></img></div>
                 <div className="w-100">
                     <textarea className="post-area w-100" rows={5} cols={20} placeholder={`What's on your mind, ${user.firstName}`} value={post} onChange={(event) => setPost(event.target.value)}/>
@@ -105,13 +125,26 @@ export function Home(){
                 </div>
                 
             </div>
-            {
-                posts.map((post) => {
-                    return(
-                        <SinglePost key={post._id} data={{post, bookmarks, user, handleLikeClick, handleDisLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
-                    )
-                })
-            }
-    </div>
+            <div className="row post-filter">
+                <div className="col-md-9"><h5 >{state.filter}</h5></div>
+                <div className="col-md-3 nav-item dropdown dropstart d-flex justify-content-end"> <i className=" fa fa-filter d-flex align-content-end cursor-pointer" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                    {<ul className="dropdown-menu">
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "trending" })}>Trending</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "latest" })}>Latest</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "oldest" })}>Oldest</a></li>
+                    </ul>}
+                </div>
+            </div>
+
+            <div className="main-content">
+                {
+                    state.filteredPosts.map((post) => {
+                        return(
+                            <SinglePost key={post._id} data={{post, bookmarks, user, handleLikeClick, handleDisLikeClick, handleBookmarkClick, handleDeletePost, handleRemoveBookmarkClick}} />
+                        )
+                    })
+                }
+            </div>
+            </div>
     )
 }

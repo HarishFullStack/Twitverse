@@ -54,3 +54,13 @@
 .button-remove:hover{
     opacity: 75%;
 }
+
+.post-filter{
+    background-color: aliceblue;
+    padding: 1rem !important;
+    margin: auto;
+}
+
+.p1-rem{
+    padding: 1rem;
+}

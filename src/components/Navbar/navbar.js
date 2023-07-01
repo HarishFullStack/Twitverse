@@ -21,7 +21,7 @@ export function Navbar(){
     }
 
     return(
-        <ul className="nav flex-column">
+        <ul className="nav flex-column sticky-top">
             <li className="nav-item">
                 <div className="navlink">
                     <NavLink className="nav-link" style={getActiveStyle} to="/home"><i className="fa fa-home"></i> Home</NavLink>

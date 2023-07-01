@@ -26,7 +26,7 @@ function App() {
       <Navbar/>
       </div>}
       {isLoggedIn && <div className='v-left'></div>}
-      <div className='w-50'>
+      <div className='w-50 p-0'>
         <Routes>
           <Route path='/' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>

@@ -37,7 +37,6 @@ export function SignUp() {
                 toast.success("Account created", {position: toast.POSITION.BOTTOM_RIGHT});
                 localStorage.setItem("encodedToken", res.encodedToken);
                 localStorage.setItem("user", JSON.stringify(res.createdUser));
-                console.log(res);
                 setIsLoggedIn(true);
                 setUser(res.createdUser);
                 setBookmarks(res.createdUser.bookmarks);

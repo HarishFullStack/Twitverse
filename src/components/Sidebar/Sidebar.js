@@ -68,7 +68,7 @@ export function Sidebar(){
         }
     }
 
-    return(<div className="sidebar w-100">
+    return(<div className="sidebar w-100 sticky-top">
             <h4>Who to Follow</h4>
             {followList.map((follow) => {
                     return(

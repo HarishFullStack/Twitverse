@@ -36,8 +36,7 @@ export function SinglePost({data}){
                 body: JSON.stringify({postData})
             });
             const res = await response.json();
-            console.log(res);
-            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setPosts(res.posts);
             setPost("");
             handleClose();
         } catch(error) {

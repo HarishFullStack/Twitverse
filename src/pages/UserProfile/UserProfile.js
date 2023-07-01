@@ -70,7 +70,10 @@ const reducer = (state, action) => {
         getPosts();
      }, [])
 
-    const handleClose = () => setShowEditProfileModal(false);
+    const handleClose = () => {
+        setSelectedProfile({...selectedProfile, profilePic: user.profilePic} )
+        setShowEditProfileModal(false)
+    };
 
     const handleEditProfile = () => {
         setShowEditProfileModal(true);
@@ -96,10 +99,9 @@ const reducer = (state, action) => {
             localStorage.setItem("user", JSON.stringify(res.user));
             setUser(res.user);
             if(res.user.username === username){
-                console.log(res.user);
                 setSelectedProfile(res.user);
             }
-            handleClose();
+            setShowEditProfileModal(false)
         } catch(error) {
             console.log(error);
         }

@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
 import { PostContext } from "../../context/PostContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function SinglePost({data}){
     let location = useLocation();
@@ -39,6 +41,7 @@ export function SinglePost({data}){
             setPosts(res.posts);
             setPost("");
             handleClose();
+            data.post.content = post;
         } catch(error) {
             console.log(error);
         }
@@ -54,8 +57,8 @@ export function SinglePost({data}){
             <p onClick={() => navigate(`/post/${data.post._id}`)}>{data.post.content}</p>
             <div className="">
                 <div className="d-flex">
-                    {data.post.likes && <div className="col-md-4"><img className="actions cursor-pointer" src={data.post.likes.likedBy.find((by) => by._id === data.user._id) !== undefined ? require('../../images/heart-red.png') : require('../../images/heart-empty.png')} onClick={() => data.post.likes.likedBy.find((by) => by._id === data.user._id) !== undefined ? data.handleDisLikeClick(data.post._id) : data.handleLikeClick(data.post._id)}></img> {data.post.likes.likeCount}</div>}
-                    {data.post.likes && <div className="col-md-4"><img className="actions cursor-pointer" src={data.bookmarks.find((bookmark) => bookmark._id === data.post._id) !== undefined ? require('../../images/bookmark-green.png') : require('../../images/bookmark-black.png') } onClick={() => data.bookmarks.find((bookmark) => bookmark._id === data.post._id) !== undefined ? data.handleRemoveBookmarkClick(data.post._id) : data.handleBookmarkClick(data.post._id)}></img></div>}
+                    {data.post.likes && <div className="col-md-6"><img className="actions cursor-pointer" src={data.post.likes.likedBy.find((by) => by._id === data.user._id) !== undefined ? require('../../images/heart-red.png') : require('../../images/heart-empty.png')} onClick={() => data.post.likes.likedBy.find((by) => by._id === data.user._id) !== undefined ? data.handleDisLikeClick(data.post._id) : data.handleLikeClick(data.post._id)}></img> {data.post.likes.likeCount}</div>}
+                    {data.post.likes && <div className="col-md-6"><img className="actions cursor-pointer" src={data.bookmarks.find((bookmark) => bookmark._id === data.post._id) !== undefined ? require('../../images/bookmark-green.png') : require('../../images/bookmark-black.png') } onClick={() => data.bookmarks.find((bookmark) => bookmark._id === data.post._id) !== undefined ? data.handleRemoveBookmarkClick(data.post._id) : data.handleBookmarkClick(data.post._id)}></img></div>}
                 </div>
             </div>
         </div>

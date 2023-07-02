@@ -25,7 +25,7 @@ function App() {
       {isLoggedIn && <div className='w-15'>
       <Navbar/>
       </div>}
-      {isLoggedIn && <div className='v-left'></div>}
+      {/* {isLoggedIn && <div className='v-left'></div>} */}
       <div className='w-50 p-0'>
         <Routes>
           <Route path='/' element={<Login/>}></Route>
@@ -37,7 +37,7 @@ function App() {
           <Route path='/profile/:username' element={<RequiresAuth><UserProfile/></RequiresAuth>}></Route>
         </Routes>
       </div>
-      {isLoggedIn && <div className='v-right'></div>}
+      {/* {isLoggedIn && <div className='v-right'></div>} */}
       {isLoggedIn && <div className='w-auto'>
         <Sidebar/>
       </div>}

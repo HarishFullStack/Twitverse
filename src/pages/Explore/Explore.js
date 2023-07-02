@@ -36,7 +36,8 @@ export function Explore(){
     }
 
     const handleDeletePost = (postId) => {
-        deletePost(postId)
+        deletePost(postId);
+        toast.success("Post deleted successfully", {position: toast.POSITION.BOTTOM_RIGHT});
     }
 
     const handleRemoveBookmarkClick = (postId) => {

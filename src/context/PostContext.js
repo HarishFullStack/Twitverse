@@ -19,7 +19,7 @@ export function PostProvider({children}){
             });
             const res = await response.json();
             setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
-            return res.posts;
+            return await res.posts;
         } catch(error) {
             console.log(error);
         }
@@ -89,7 +89,8 @@ export function PostProvider({children}){
                 headers: {"authorization": localStorage.getItem("encodedToken")}
             });
             const res = await response.json();
-            setPosts(posts.filter((x) => x._id !== postId).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setPosts(posts);
+            return await res.posts;
         } catch(error) {
             console.log(error);
         }

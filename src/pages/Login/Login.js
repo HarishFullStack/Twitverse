@@ -55,7 +55,7 @@ export function Login(){
                     </div>
                     <div className="input-container p-2">
                         <button className="btn btn-primary" disabled={username === "" || password === "" } onClick={() => handleLogin(username, password)}>Login</button>
-                        <button className="btn btn-primary btn-login-guest" onClick={() => handleLogin("adarshbalika", "adarshBalika123")}>Login as Guest</button>
+                        <button className="btn btn-primary btn-login-guest" onClick={() => handleLogin("harishgupta", "harishgupta123")}>Login as Guest</button>
                     </div>
                     <div className="p-2">
                         <label>Don't have an account?</label> <NavLink to="/signup">sign up</NavLink>

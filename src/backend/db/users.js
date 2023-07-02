@@ -8,13 +8,13 @@ import { formatDate } from "../utils/authUtils";
 export const users = [
   {
     _id: uuid(),
-    firstName: "Adarsh",
-    lastName: "Balika",
-    username: "adarshbalika",
-    password: "adarshBalika123",
-    bio: "I am Adarsh Balika",
-    website: "https://adarshbalika.com",
-    profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp",
+    firstName: "Harish",
+    lastName: "Gupta",
+    username: "harishgupta",
+    password: "harishgupta123",
+    bio: "",
+    website: "",
+    profilePic: "https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/download_sy9imr.jpg",
     followers: [],
     following: [
       {

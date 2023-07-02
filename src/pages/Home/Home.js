@@ -15,19 +15,17 @@ export function Home(){
 
     const {user, followList, setFollowList} = useContext(AuthContext);
     const {posts, setPosts, bookmarks, setBookmarks, likePost, disLikePost, bookmarkPost, removeBookmark, deletePost} = useContext(PostContext);
+    const [followingPosts, setFollowingPosts] = useState([])
 
     const [post, setPost] = useState("");
     const [file, setFile] = useState();
-
 
     const getPosts = async () => {
         try{
             const response = await fetch("/api/posts");
             const res = await response.json();
-            let following = user.following.map((x) => x.username);
-            following = [...following, user.username];
-            console.log(res)
-            setPosts(res.posts);
+            setFollowingPosts(getFollowingPosts(res.posts));
+            dispatch({type: "trending", value: getFollowingPosts(res.posts)});
             //setIsLoading(false);
         } catch(error) {
             console.log(error);
@@ -35,45 +33,60 @@ export function Home(){
         }
     }
 
+    
+    useEffect(() => {
+        getPosts();
+    },[])
+
     const reducer = (state, action) => {
         switch(action.type){
             case "trending":
-                return {...state, filter: "Trending Posts", filteredPosts: posts.sort((a, b) => b.likes.likeCount - a.likes.likeCount)}
+                return {...state, filter:"trending", filterText: "Trending Posts", filteredPosts: action.value.sort((a,b) => b.likes.likeCount - a.likes.likeCount)}
             case "latest":
-                return {...state, filter: "Latest Posts", filteredPosts: posts.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)) }
+                return {...state, filter:"latest", filterText: "Latest Posts", filteredPosts: action.value.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))}
             case "oldest":
-                return {...state, filter: "Oldest Posts", filteredPosts: posts.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))  }
+                return {...state, filter:"oldest", filterText: "Oldest Posts", filteredPosts: action.value.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt))}
         }
     }
 
     const [state, dispatch] = useReducer(reducer, {
-        filter: "Trending Posts",
-        filteredPosts: posts.sort((a, b) => b.likes.likeCount - a.likes.likeCount)
+        filter: "trending",
+        filterText: "Trending Posts",
+        filteredPosts: followingPosts
     }); 
 
-    useEffect(() => {
-        //setIsLoading(true);
-        getPosts();
-    },[])
-
-    const handleLikeClick = (postId) => {
-        likePost(postId);
+    const getFollowingPosts = (posts) => {
+        let following = user.following.map((x) => x.username);
+        following = [...following, user.username];
+        const filteredPosts =  posts.filter((x) => following.includes(x.username));
+        console.log(filteredPosts);
+        return filteredPosts;
     }
 
-    const handleDisLikeClick = (postId) => {
-        disLikePost(postId);
+    const handleLikeClick = async (postId) => {
+        const index = followingPosts.findIndex((x) => x._id === postId);
+        const likedPost =  await likePost(postId)
+        followingPosts[index] = likedPost.find((x) => x._id === postId);
+
+        dispatch({type: state.filter, value: followingPosts});
+    }
+
+    const handleDisLikeClick = async (postId) => {
+        const index = followingPosts.findIndex((x) => x._id === postId);
+        const likedPost =  await disLikePost(postId);
+        followingPosts[index] = likedPost.find((x) => x._id === postId);
+        
+        dispatch({type: state.filter, value: followingPosts});
     }
 
     const handleBookmarkClick = (postId) => {
-        bookmarkPost(postId)
+        bookmarkPost(postId);
+        dispatch({type: state.filter, value: followingPosts});
     }
 
-    const handleFileUpload = (e) => {
-        setFile(URL.createObjectURL(e.target.files[0]));
-    }
-
-    const handleRemoveFile = (e) => {
-        setFile();
+    const handleRemoveBookmarkClick = (postId) => {
+        removeBookmark(postId);
+        dispatch({type: state.filter, value: followingPosts});
     }
 
     const handleCreatePost = async () => {
@@ -90,20 +103,21 @@ export function Home(){
                 body: JSON.stringify({postData})
             });
             const res = await response.json();
-            setPosts(res.posts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setPosts(res.posts);
             setPost("");
+            setFollowingPosts(getFollowingPosts(res.posts));
+            dispatch({type: state.filter, value: getFollowingPosts(res.posts)});
         } catch(error) {
             console.log(error);
         }
     }
 
-    const handleDeletePost = (postId) => {
-        deletePost(postId)
+    const handleDeletePost = async (postId) => {
+        dispatch({type: state.filter, value: getFollowingPosts(await deletePost(postId))});
+        toast.success("Post deleted successfully", {position: toast.POSITION.BOTTOM_RIGHT});
     }
 
-    const handleRemoveBookmarkClick = (postId) => {
-        removeBookmark(postId);
-    }
+    
 
     return(
         <div className="">
@@ -126,12 +140,12 @@ export function Home(){
                 
             </div>
             <div className="row post-filter">
-                <div className="col-md-9"><h5 >{state.filter}</h5></div>
+                <div className="col-md-9"><h5 >{state.filterText}</h5></div>
                 <div className="col-md-3 nav-item dropdown dropstart d-flex justify-content-end"> <i className=" fa fa-filter d-flex align-content-end cursor-pointer" data-bs-toggle="dropdown" aria-hidden="true"></i>
                     {<ul className="dropdown-menu">
-                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "trending" })}>Trending</a></li>
-                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "latest" })}>Latest</a></li>
-                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "oldest" })}>Oldest</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "trending", value: followingPosts })}>Trending</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "latest", value: followingPosts })}>Latest</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => dispatch({type: "oldest", value: followingPosts })}>Oldest</a></li>
                     </ul>}
                 </div>
             </div>

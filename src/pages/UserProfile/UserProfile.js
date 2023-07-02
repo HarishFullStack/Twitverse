@@ -221,6 +221,7 @@ const reducer = (state, action) => {
                     <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/download_sy9imr.jpg" onClick={(event) => handleAvatarUpdate(event)}></img>
                     <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1686553005/Twitverse/profile-pics/depositphotos_131750410-stock-illustration-woman-female-avatar-character_fio5tu.webp" onClick={(event) => handleAvatarUpdate(event)}></img>
                     <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/images_1_lfwcu1.png" onClick={(event) => handleAvatarUpdate(event)}></img>
+                    <img className="profile-avatar cursor-pointer" alt={selectedProfile.username} src="https://res.cloudinary.com/dkkmc7pub/image/upload/v1687433270/Twitverse/profile-pics/images_rvd3bo.png" onClick={(event) => handleAvatarUpdate(event)}></img>
                 </Modal.Body>
             </Modal>
         </div>
